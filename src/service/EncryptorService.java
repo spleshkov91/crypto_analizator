@@ -1,13 +1,19 @@
-import constans.Consts;
+package service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.HashMap;
 
-import static constans.Consts.*;
+import static constans.Consts.PATH_OF_FILE;
+import static constans.Consts.PATH_OF_ENCRYPTION_FILE;
+import static constans.Consts.DONE;
 
-public class Encryptor {
+public class EncryptorService {
     private FileService fileService;
 
-    public Encryptor(FileService fileService) {
+    public EncryptorService(FileService fileService) {
         this.fileService = fileService;
     }
 
@@ -15,14 +21,14 @@ public class Encryptor {
             'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ',
             'ъ', 'ы', 'ь', 'э', 'ю', 'я', '.', ',', '«', '»', '"', '\'', ':', '!', '?', ' ', '\n'};
 
-    public static char[] getALPHABET() {
+    public static char[] getAlphabet() {
         return ALPHABET;
     }
 
     /**
      * Получем новый List, сдвигая символы в старом, на значение ключа.
      */
-    public static List<Character> encryptionFile(int key, List<Character> readFile) {
+    public List<Character> encryptionFile(int key, List<Character> readFile) {
         List<Character> afterEnrcyption = new ArrayList<>();
 
         for (int i = 0; i < readFile.size(); i++) {
@@ -51,15 +57,15 @@ public class Encryptor {
 
         System.out.println("Введите ключ");
         int key = scanner.nextInt();
-        if (key > 0 && key <= Encryptor.getALPHABET().length - 1) {
+        if (key > 0 && key <= ALPHABET.length - 1) {
 
             System.out.println(PATH_OF_ENCRYPTION_FILE);
-            fileService.writeFile(Encryptor.encryptionFile(key, readFile));
+            fileService.writeFile(encryptionFile(key, readFile));
 
             System.out.println(DONE);
         } else {
             System.err.println("Введите правильный ключ! Ключ должен быть больше 0 и меньше "
-                    + Encryptor.getALPHABET().length);
+                    + EncryptorService.getAlphabet().length);
             System.exit(0);
         }
     }
@@ -73,16 +79,16 @@ public class Encryptor {
 
         System.out.println("Введите ключ");
         int key = scanner.nextInt();
-        if (key > 0 && key <= Encryptor.getALPHABET().length - 1) {
-            key = Encryptor.getALPHABET().length - key;
+        if (key > 0 && key <= ALPHABET.length - 1) {
+            key = ALPHABET.length - key;
 
             System.out.println(PATH_OF_FILE);
-            fileService.writeFile(Encryptor.encryptionFile(key, readFile));
+            fileService.writeFile(encryptionFile(key, readFile));
 
             System.out.println(DONE);
         } else {
             System.err.println("Введите правильный ключ! Ключ должен быть больше 0 и меньше "
-                    + Encryptor.getALPHABET().length);
+                    + ALPHABET.length);
             System.exit(0);
         }
     }
@@ -97,9 +103,9 @@ public class Encryptor {
         Map<Integer, Integer> bruteForce = new HashMap<>();
         int count = 0;
 
-        for (int i = 0; i < Encryptor.getALPHABET().length; i++) {
+        for (int i = 0; i < EncryptorService.getAlphabet().length; i++) {
             count = 0;
-            List<Character> temp = Encryptor.encryptionFile(i, readFile);
+            List<Character> temp = encryptionFile(i, readFile);
             for (int j = 0; j < temp.size(); j++) {
                 for (int k = j + 1; k < temp.size(); k++) {
                     if (((temp.get(j) == ',') & (temp.get(k)) == ' ')) {
@@ -116,7 +122,7 @@ public class Encryptor {
             }
         }
         System.out.println(PATH_OF_FILE);
-        fileService.writeFile(Encryptor.encryptionFile(maxKey, readFile));
+        fileService.writeFile(encryptionFile(maxKey, readFile));
         System.out.println(DONE);
         System.exit(0);
     }

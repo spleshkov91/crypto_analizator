@@ -1,13 +1,18 @@
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.*;
+import service.EncryptorService;
+import service.FileService;
 
-import static constans.Consts.*;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+
+import static constans.Consts.MAIN_MENU;
+
 
 public class Main {
 
     public static void main(String[] args) {
+        EncryptorService encryptorService = new EncryptorService(new FileService());
         Scanner scanner = new Scanner(System.in);
         int input;
 
@@ -22,22 +27,10 @@ public class Main {
             }
 
             switch (input) {
-                case 1 -> {
-                    Encryptor encryptor = new Encryptor(new FileService());
-                    encryptor.encryption(scanner);
-                    System.exit(0);
-                }
-                case 2 -> {
-                    Encryptor encryptor = new Encryptor(new FileService());
-                    encryptor.decryption(scanner);
-                    System.exit(0);
-                }
-                case 3 -> {
-                    Encryptor encryptor = new Encryptor(new FileService());
-                    encryptor.bruteforse();
-                }
-                case 0 -> {
-                    System.exit(0);
+                case 1 -> {encryptorService.encryption(scanner);}
+                case 2 -> {encryptorService.decryption(scanner);}
+                case 3 -> {encryptorService.bruteforse();}
+                case 0 -> {System.exit(0);
                 }
                 default -> System.out.println("Выберите правильный пункт меню!");
             }

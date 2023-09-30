@@ -1,3 +1,5 @@
+package service;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,13 +42,13 @@ public class FileService {
 
             for (int i = 0; i < readFile.size(); i++) {
                 writer.write(readFile.get(i));
-
             }
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
             System.err.println(e.getMessage());
             System.exit(0);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
+            System.exit(0);
         }
 
 
